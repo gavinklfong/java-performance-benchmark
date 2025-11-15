@@ -1,0 +1,35 @@
+# Maven target directory
+/target/
+
+# Build artifacts
+*.jar
+*.war
+*.ear
+
+# Maven release plugin files
+release.properties
+pom.xml.releaseBackup
+pom.xml.tag
+pom.xml.next
+
+# Eclipse
+.classpath
+.project
+.settings/
+.apt_generated/
+.factorypath
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# OS files
+.D
