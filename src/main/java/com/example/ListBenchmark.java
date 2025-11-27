@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 @State(Scope.Thread)
 public class ListBenchmark {
 
-    @Param({"1000000"})
+    @Param({"100"})
     public int size;
 
     private List<Integer> arrayList;
