@@ -4,13 +4,10 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-public class ListBenchmarkRunner {
+public class LinkedListBenchmarkRunner {
     public static void main(String[] args) throws Exception {
         Options opt = new OptionsBuilder()
-                .include(ListBenchmark.class.getSimpleName())
-                .forks(1)
-                .warmupIterations(0)
-                .measurementIterations(1)
+                .include(LinkedListBenchmark.class.getSimpleName())
                 .build();
 
         new Runner(opt).run();
