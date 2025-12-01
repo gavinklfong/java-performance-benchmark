@@ -7,78 +7,99 @@ import java.util.concurrent.TimeUnit;
 import java.util.random.RandomGenerator;
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
 public class LinkedListBenchmark {
 
-    @Param({"100"})
-    public int size;
 
-    private List<Integer> linkedList;
-    private RandomGenerator randomGenerator;
+    // -----------------------------
+    // State for add() benchmarks
+    // -----------------------------
+    @State(Scope.Thread)
+    public static class AddState {
+        @Param({"100"})
+        int size;
 
-    @Setup(Level.Trial)
-    public void setup() {
-        randomGenerator = RandomGenerator.getDefault();
-        linkedList = new LinkedList<>();
+        LinkedList<Integer> list;
 
-        for (int i = 0; i < size; i++) {
-            linkedList.add(i);
+        @Setup(Level.Invocation)
+        public void setup() {
+            list = new LinkedList<>();
+            for (int i = 0; i < size; i++) {
+                list.add(i);
+            }
         }
     }
 
-    // =============== ADDING ====================
-    @Benchmark
-    public Integer linkedListAppend() {
-        int num = randomGenerator.nextInt(100, 1000);
-        linkedList.add(num);
-        return num;
-    }
+    // -----------------------------
+    // State for get() + iteration
+    // -----------------------------
+    @State(Scope.Thread)
+    public static class ReadState {
+        @Param({"100"})
+        int size;
 
-    @Benchmark
-    public Integer linkedListInsert() {
-        int num = randomGenerator.nextInt(100, 1000);
-        linkedList.add(randomGenerator.nextInt(0, linkedList.size() - 1), num);
-        return num;
-    }
+        LinkedList<Integer> list;
 
-    @Benchmark
-    public Integer linkedListTraverseAndInsert() {
-        int num = randomGenerator.nextInt(100, 1000);
-        int position = randomGenerator.nextInt(linkedList.size());
-
-        ListIterator<Integer> it = linkedList.listIterator();
-        for (int i = 0; i < position + 1; i++) {
-            it.next();
+        @Setup(Level.Trial)
+        public void setup() {
+            list = new LinkedList<>();
+            for (int i = 0; i < size; i++) {
+                list.add(i);
+            }
         }
-        it.add(num);
-
-        return num;
     }
 
-    // =============== REMOVE ====================
+    // =============================
+    //         add() tests
+    // =============================
     @Benchmark
-    public int linkedListRemoveFirst() {
-        return linkedList.removeFirst();
+    public boolean add_end(AddState state) {
+        return state.list.add(12345);
     }
 
     @Benchmark
-    public int linkedListRemove() {
-        int position = randomGenerator.nextInt(linkedList.size());
-        return linkedList.remove(position);
+    public void add_middle(AddState state) {
+        state.list.add(state.size / 2, 99999);
     }
 
-    // =============== RANDOM ACCESS ====================
+    // =============================
+    //         get() tests
+    // =============================
     @Benchmark
-    public int linkedListRandomAccess() {
-        return linkedList.get(randomGenerator.nextInt(size));
+    public Integer get_first(ReadState state) {
+        return state.list.getFirst();
     }
 
-    // =============== ITERATION ====================
     @Benchmark
-    public long linkedListIteration() {
-        long sum = 0;
-        for (int value : linkedList) sum += value;
+    public Integer get_middle(ReadState state) {
+        return state.list.get(state.size / 2);
+    }
+
+    @Benchmark
+    public Integer get_last(ReadState state) {
+        return state.list.getLast();
+    }
+
+    // =============================
+    //        iteration tests
+    // =============================
+    @Benchmark
+    public int iterate_for_each(ReadState state) {
+        int sum = 0;
+        for (int v : state.list) {
+            sum += v;
+        }
+        return sum;
+    }
+
+    @Benchmark
+    public int iterate_iterator(ReadState state) {
+        int sum = 0;
+        Iterator<Integer> it = state.list.iterator();
+        while (it.hasNext()) {
+            sum += it.next();
+        }
         return sum;
     }
 }

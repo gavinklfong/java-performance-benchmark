@@ -8,6 +8,9 @@ public class ArrayListBenchmarkRunner {
     public static void main(String[] args) throws Exception {
         Options opt = new OptionsBuilder()
                 .include(ArrayListBenchmark.class.getSimpleName())
+                .warmupIterations(3)
+                .measurementIterations(5)
+                .forks(1)
                 .build();
 
         new Runner(opt).run();

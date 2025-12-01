@@ -13,52 +13,104 @@ import org.openjdk.jmh.annotations.State;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.random.RandomGenerator;
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
 public class ArrayListBenchmark {
 
-    @Param({"10000000"})
-    public int size;
+    // ----------------------------------------
+    // State for add() benchmarks
+    // ----------------------------------------
+    @State(Scope.Thread)
+    public static class AddState {
+        @Param({"100"})
+        public int size;
 
-    private List<Integer> arrayList;
-    private Random random;
+        public ArrayList<Integer> list;
 
-    @Setup(Level.Trial)
-    public void setup() {
-        arrayList = new ArrayList<>(size);
-        random = new Random(42);
-
-        for (int i = 0; i < size; i++) {
-            arrayList.add(i);
+        @Setup(Level.Invocation)
+        public void setup() {
+            list = new ArrayList<>(size);
+            for (int i = 0; i < size; i++) {
+                list.add(i);
+            }
         }
     }
 
-    // =============== ADDING ====================
+    // ----------------------------------------
+    // State for get() and iteration benchmarks
+    // ----------------------------------------
+    @State(Scope.Thread)
+    public static class ReadState {
+        @Param({"100"})
+        public int size;
 
-    @Benchmark
-    public List<Integer> arrayListAdd() {
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < size; i++) list.add(i);
-        return list;
+        public ArrayList<Integer> list;
+
+        @Setup(Level.Trial)
+        public void setup() {
+            list = new ArrayList<>(size);
+            for (int i = 0; i < size; i++) {
+                list.add(i);
+            }
+        }
     }
 
-    // =============== RANDOM ACCESS ====================
-
+    // ========================================
+    //              add() benchmarks
+    // ========================================
     @Benchmark
-    public int arrayListRandomAccess() {
-        return arrayList.get(random.nextInt(size));
+    public boolean add_end(AddState state) {
+        return state.list.add(12345);
     }
 
-    // =============== ITERATION ====================
+    @Benchmark
+    public void add_middle(AddState state) {
+        state.list.add(state.size / 2, 99999);
+    }
+
+    // ========================================
+    //              get() benchmarks
+    // ========================================
+    @Benchmark
+    public Integer get_first(ReadState state) {
+        return state.list.get(0);
+    }
 
     @Benchmark
-    public long arrayListIteration() {
-        long sum = 0;
-        for (int value : arrayList) sum += value;
+    public Integer get_middle(ReadState state) {
+        return state.list.get(state.size / 2);
+    }
+
+    @Benchmark
+    public Integer get_last(ReadState state) {
+        return state.list.get(state.size - 1);
+    }
+
+    // ========================================
+    //              iteration benchmarks
+    // ========================================
+    @Benchmark
+    public int iterate_for_loop(ReadState state) {
+        int sum = 0;
+        ArrayList<Integer> list = state.list;
+        for (int i = 0; i < list.size(); i++) {
+            sum += list.get(i);
+        }
+        return sum;
+    }
+
+    @Benchmark
+    public int iterate_for_each(ReadState state) {
+        int sum = 0;
+        for (int v : state.list) {
+            sum += v;
+        }
         return sum;
     }
 }
