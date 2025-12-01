@@ -9,8 +9,8 @@ public class BlockQueueBenchmarkRunner {
         Options opt = new OptionsBuilder()
                 .include(BlockingQueueBenchmark.class.getSimpleName())
                 .forks(1)
-                .warmupIterations(10)
-                .measurementIterations(10)
+                .warmupIterations(3)
+                .measurementIterations(5)
                 .build();
 
         new Runner(opt).run();

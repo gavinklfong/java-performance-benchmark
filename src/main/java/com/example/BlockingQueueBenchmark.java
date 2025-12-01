@@ -1,69 +1,61 @@
 package com.example;
 
 import org.openjdk.jmh.annotations.*;
-import org.openjdk.jmh.infra.Blackhole;
-
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
-@Warmup(iterations = 5, time = 1)
+@Warmup(iterations = 3, time = 1)
 @Measurement(iterations = 5, time = 1)
 @Fork(2)
-@State(Scope.Group)
 public class BlockingQueueBenchmark {
 
-    @Param({"1000000"}) // capacity: change if needed
-    int capacity;
+    // ============================================================
+    //                         Queue State
+    // ============================================================
+    @State(Scope.Group)
+    public static class QueueState {
 
-    ArrayBlockingQueue<Integer> arrayQueue;
-    LinkedBlockingQueue<Integer> linkedQueue;
+        @Param({"array", "linked"})
+//        @Param({"array"})
+        public String type;
 
-    @Setup(Level.Iteration)
-    public void setup() {
-        arrayQueue = new ArrayBlockingQueue<>(capacity);
-        linkedQueue = new LinkedBlockingQueue<>(capacity);
+        @Param({"1024"})   // capacity for ArrayBlockingQueue
+        public int capacity;
+
+        BlockingQueue<Integer> queue;
+
+        @Setup(Level.Trial)
+        public void setup() {
+            switch (type) {
+                case "array":
+                    queue = new ArrayBlockingQueue<>(capacity);
+                    break;
+                case "linked":
+                    queue = new LinkedBlockingQueue<>(capacity);
+                    break;
+            }
+        }
     }
 
-    // ----------------------------
-    // ArrayBlockingQueue benchmark
-    // ----------------------------
-
-    @Group("array")
-    @GroupThreads(4)
+    // ============================================================
+    //                          Producer
+    // ============================================================
+    @Group("queue")
+    @GroupThreads(4)  // four producers
     @Benchmark
-    public void array_put() throws InterruptedException {
-        arrayQueue.put(1);
+    public void produce(QueueState s) throws Exception {
+        s.queue.offer(1, 1, TimeUnit.SECONDS); // uses blocking put to avoid dropping
     }
 
-    @Group("array")
-    @GroupThreads(4)
+    // ============================================================
+    //                          Consumer
+    // ============================================================
+    @Group("queue")
+    @GroupThreads(4)  // four consumers
     @Benchmark
-    public Integer array_take(Blackhole bh) throws InterruptedException {
-        Integer v = arrayQueue.take();
-        bh.consume(v);
-        return v;
-    }
-
-    // ----------------------------
-    // LinkedBlockingQueue benchmark
-    // ----------------------------
-
-    @Group("linked")
-    @GroupThreads(4)
-    @Benchmark
-    public void linked_put() throws InterruptedException {
-        linkedQueue.put(1);
-    }
-
-    @Group("linked")
-    @GroupThreads(4)
-    @Benchmark
-    public Integer linked_take(Blackhole bh) throws InterruptedException {
-        Integer v = linkedQueue.take();
-        bh.consume(v);
-        return v;
+    public Integer consume(QueueState s) throws Exception {
+        return s.queue.poll(1, TimeUnit.SECONDS);
     }
 }
