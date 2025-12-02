@@ -11,7 +11,7 @@ public class DemoBenchmarkRunner {
     public static void main(String[] args) throws Exception {
         Options opt = new OptionsBuilder()
                 .include(DemoBenchmark.class.getSimpleName())
-                .mode(Mode.AverageTime)
+                .mode(Mode.Throughput)
                 .timeUnit(TimeUnit.NANOSECONDS)
                 .forks(1)
                 .warmupIterations(2)
