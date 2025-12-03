@@ -1,7 +1,18 @@
 package com.example.orderbook;
 
-import org.openjdk.jmh.annotations.*;
-import java.math.BigDecimal;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Fork;
+import org.openjdk.jmh.annotations.Level;
+import org.openjdk.jmh.annotations.Measurement;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Param;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.Warmup;
+
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -10,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 @Warmup(iterations = 3, time = 1)
 @Measurement(iterations = 5, time = 1)
 @Fork(1)
-public class OrderBookBenchmark {
+public class OrderBook1Benchmark {
 
     @State(Scope.Thread)
     public static class ThreadState {
@@ -25,10 +36,9 @@ public class OrderBookBenchmark {
             return rand.nextInt(1_000_000);
         }
 
-        BigDecimal randomPrice() {
+        long randomPrice() {
             // 99.00 – 101.00
-            return BigDecimal.valueOf(99 + rand.nextDouble() * 2)
-                    .setScale(2, BigDecimal.ROUND_HALF_UP);
+            return 99 + rand.nextInt() * 2L;
         }
 
         long randomQuantity() {
@@ -48,12 +58,12 @@ public class OrderBookBenchmark {
         @Param({"1000"}) // orders per price level
         int ordersPerLevel;
 
-        OrderBook orderBook;
+        OrderBook1 orderBook;
         Random rand;
 
         @Setup(Level.Iteration)
         public void setup() {
-            orderBook = new OrderBook();
+            orderBook = new OrderBook1();
             rand = new Random(999);
 
             preloadBuyOrders();
@@ -62,13 +72,12 @@ public class OrderBookBenchmark {
 
         private void preloadBuyOrders() {
             for (int i = 0; i < buyLevels; i++) {
-                BigDecimal price = BigDecimal.valueOf(100 - i * 0.01)
-                        .setScale(2, BigDecimal.ROUND_HALF_UP);
+                long price = 100 - i;
 
                 for (int j = 0; j < ordersPerLevel; j++) {
-                    orderBook.insert(new OrderBigDecimal(
+                    orderBook.insert(new OrderLong(
                             nextId(),
-                            OrderBigDecimal.Side.BUY,
+                            OrderLong.Side.BUY,
                             price,
                             randQty()
                     ));
@@ -78,13 +87,12 @@ public class OrderBookBenchmark {
 
         private void preloadSellOrders() {
             for (int i = 0; i < sellLevels; i++) {
-                BigDecimal price = BigDecimal.valueOf(100 + i * 0.01)
-                        .setScale(2, BigDecimal.ROUND_HALF_UP);
+                long price = 100 + i;
 
                 for (int j = 0; j < ordersPerLevel; j++) {
-                    orderBook.insert(new OrderBigDecimal(
+                    orderBook.insert(new OrderLong(
                             nextId(),
-                            OrderBigDecimal.Side.SELL,
+                            OrderLong.Side.SELL,
                             price,
                             randQty()
                     ));
@@ -106,9 +114,9 @@ public class OrderBookBenchmark {
     // ------------------------------
     @Benchmark
     public void insertBuy(SharedState state, ThreadState ts) {
-        OrderBigDecimal order = new OrderBigDecimal(
+        OrderLong order = new OrderLong(
                 ts.randomId(),
-                OrderBigDecimal.Side.BUY,
+                OrderLong.Side.BUY,
                 ts.randomPrice(),
                 ts.randomQuantity()
         );
@@ -120,9 +128,9 @@ public class OrderBookBenchmark {
     // ------------------------------
     @Benchmark
     public void insertSell(SharedState state, ThreadState ts) {
-        OrderBigDecimal order = new OrderBigDecimal(
+        OrderLong order = new OrderLong(
                 ts.randomId(),
-                OrderBigDecimal.Side.SELL,
+                OrderLong.Side.SELL,
                 ts.randomPrice(),
                 ts.randomQuantity()
         );

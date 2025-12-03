@@ -1,13 +1,13 @@
 package com.example.orderbook;
 
-class Order {
+class OrderLong {
     enum Side { BUY, SELL }
     final long id;
     final Side side;
-    final double price;
+    final long price;
     long quantity;
 
-    Order(long id, Side side, double price, long quantity) {
+    OrderLong(long id, Side side, long price, long quantity) {
         this.id = id;
         this.side = side;
         this.price = price;
@@ -16,6 +16,7 @@ class Order {
 
     @Override
     public String toString() {
-        return "%s %d @ %.2f (id=%d)".formatted(side, quantity, price, id);
+        return "%s %d @ %d (id=%d)".formatted(side, quantity, price, id);
     }
 }
+

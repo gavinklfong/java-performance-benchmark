@@ -1,13 +1,15 @@
 package com.example.orderbook;
 
-class Order {
+import java.math.BigDecimal;
+
+class OrderBigDecimal {
     enum Side { BUY, SELL }
     final long id;
     final Side side;
-    final double price;
+    final BigDecimal price;
     long quantity;
 
-    Order(long id, Side side, double price, long quantity) {
+    OrderBigDecimal(long id, Side side, BigDecimal price, long quantity) {
         this.id = id;
         this.side = side;
         this.price = price;
@@ -19,3 +21,4 @@ class Order {
         return "%s %d @ %.2f (id=%d)".formatted(side, quantity, price, id);
     }
 }
+

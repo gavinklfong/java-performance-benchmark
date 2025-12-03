@@ -7,13 +7,13 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.concurrent.TimeUnit;
 
-public class OrderBookBenchmarkRunner {
+public class OrderBook3BenchmarkRunner {
     public static void main(String[] args) throws Exception {
         Options opt = new OptionsBuilder()
-                .include(OrderBookBenchmark.class.getSimpleName())
+                .include(OrderBook3Benchmark.class.getSimpleName())
                 .mode(Mode.Throughput)
                 .timeUnit(TimeUnit.MILLISECONDS)
-                .forks(2)
+                .forks(1)
                 .warmupIterations(5)
                 .measurementIterations(5)
                 .build();
