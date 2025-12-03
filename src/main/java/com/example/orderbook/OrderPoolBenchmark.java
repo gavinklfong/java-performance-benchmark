@@ -7,8 +7,8 @@ import org.openjdk.jmh.infra.Blackhole;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
-@BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@BenchmarkMode(Mode.Throughput)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
 @Warmup(iterations = 3)
 @Measurement(iterations = 5)
 @Fork(1)
