@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
   <diagram name="Page-1" id="2uG8yVvUBOEjkMj76yYg">
-    <mxGraphModel dx="1426" dy="854" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1426" dy="854" grid="0" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -249,7 +249,7 @@
             <mxPoint x="145" y="615" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TdiGb9WMWT67Nj5B0uXl-83" value="Price in decending order" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+        <mxCell id="TdiGb9WMWT67Nj5B0uXl-83" value="Price in descending order" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="80" y="675" width="60" height="50" as="geometry" />
         </mxCell>
         <mxCell id="TdiGb9WMWT67Nj5B0uXl-84" value="Price in ascending order" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
@@ -469,7 +469,7 @@
             <mxPoint x="150" y="1160.32" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TdiGb9WMWT67Nj5B0uXl-144" value="Price in decending order" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+        <mxCell id="TdiGb9WMWT67Nj5B0uXl-144" value="Price in descending order" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="85" y="1220.32" width="60" height="50" as="geometry" />
         </mxCell>
         <mxCell id="TdiGb9WMWT67Nj5B0uXl-145" value="Price in ascending order" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
@@ -612,7 +612,7 @@
           <mxGeometry x="2155" y="552.1500000000001" width="20" height="215.25" as="geometry" />
         </mxCell>
         <mxCell id="TdiGb9WMWT67Nj5B0uXl-287" value="SortedMap" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontColor=#CC0000;" vertex="1" parent="1">
-          <mxGeometry x="1670" y="667.7600000000001" width="60" height="30" as="geometry" />
+          <mxGeometry x="1653" y="735.2500000000001" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="TdiGb9WMWT67Nj5B0uXl-295" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;fontColor=#CC0000;strokeColor=#CC0000;" vertex="1" parent="1">
           <mxGeometry x="1735" y="550.14" width="20" height="399.86" as="geometry" />
@@ -966,6 +966,24 @@
         </mxCell>
         <mxCell id="TdiGb9WMWT67Nj5B0uXl-487" value="Fixed size ring buffer" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="3310" y="575" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="TdiGb9WMWT67Nj5B0uXl-488" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#FF0000;" vertex="1" parent="1">
+          <mxGeometry x="140" y="605" width="257" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TdiGb9WMWT67Nj5B0uXl-489" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;fontColor=#CC0000;strokeColor=#CC0000;" vertex="1" parent="1">
+          <mxGeometry x="107" y="600" width="20" height="73" as="geometry" />
+        </mxCell>
+        <mxCell id="TdiGb9WMWT67Nj5B0uXl-490" value="The highest buy price" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontColor=#CC0000;" vertex="1" parent="1">
+          <mxGeometry x="28" y="622" width="83" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="TdiGb9WMWT67Nj5B0uXl-491" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CC0000;" vertex="1" parent="1">
+          <mxGeometry x="474.5" y="606.5" width="257" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TdiGb9WMWT67Nj5B0uXl-492" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;fontColor=#CC0000;strokeColor=#CC0000;direction=west;" vertex="1" parent="1">
+          <mxGeometry x="737" y="601" width="20" height="73" as="geometry" />
+        </mxCell>
+        <mxCell id="TdiGb9WMWT67Nj5B0uXl-493" value="The lowest sell price" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontColor=#CC0000;" vertex="1" parent="1">
+          <mxGeometry x="760" y="624.94" width="78" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
