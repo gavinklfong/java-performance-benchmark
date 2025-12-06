@@ -4,7 +4,6 @@ package com.example.orderbook;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
-import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.Throughput)
@@ -110,19 +109,19 @@ public class OrderPoolBenchmark {
         @Param({"128", "512", "1024"})
         int capacity;
 
-        LinkedList<Order> normalQueue;
-        OrderQueue customQueue;
+        OrderQueue customQueue1;
+        OrderQueue customQueue2;
         OrderPool orderPool;
 
         long counter = 0;
 
         @Setup(Level.Iteration)
         public void setup() {
-            normalQueue = new LinkedList<>();
             // capacity must be power of 2 for OrderQueue
             int pow2 = Integer.highestOneBit(capacity);
             if (pow2 < capacity) pow2 <<= 1;
-            customQueue = new OrderQueue(pow2);
+            customQueue1 = new OrderQueue(pow2);
+            customQueue2 = new OrderQueue(pow2);
             orderPool = new OrderPool(capacity);
         }
     }
@@ -131,14 +130,14 @@ public class OrderPoolBenchmark {
        Benchmark: Normal queue
        ====================== */
     @Benchmark
-    public void normalQueueOfferPoll(QueueState s, Blackhole bh) {
+    public void nonPooledQueueOfferPoll(QueueState s, Blackhole bh) {
         // simulate multiple cycles (fill queue, poll all)
         for (int i = 0; i < s.capacity; i++) {
             Order o = new Order(s.counter++, Order.Side.BUY, i, 1);
-            s.normalQueue.add(o);
+            s.customQueue1.add(o);
         }
-        while (!s.normalQueue.isEmpty()) {
-            bh.consume(s.normalQueue.poll());
+        while (!s.customQueue1.isEmpty()) {
+            bh.consume(s.customQueue1.poll());
         }
     }
 
@@ -150,11 +149,11 @@ public class OrderPoolBenchmark {
         // fill queue using pooled objects
         for (int i = 0; i < s.capacity; i++) {
             Order o = s.orderPool.acquire(s.counter++, Order.Side.BUY, i, 1);
-            s.customQueue.add(o);
+            s.customQueue2.add(o);
         }
         // poll all and release back to pool
-        while (!s.customQueue.isEmpty()) {
-            Order o = s.customQueue.poll();
+        while (!s.customQueue2.isEmpty()) {
+            Order o = s.customQueue2.poll();
             s.orderPool.release(o);
             bh.consume(o);
         }

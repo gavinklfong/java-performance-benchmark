@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 @Warmup(iterations = 3)
 @Measurement(iterations = 5)
-@BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@BenchmarkMode(Mode.Throughput)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
 @Fork(value = 1, jvmArgs = {
         "-Xms1g",
         "-Xmx1g"
